@@ -1,0 +1,95 @@
+---
+title: Voluntary Ecosystem Review Barcelona '2022'
+Author: Syd Kotar
+Date: '12 April 2022'
+---
+
+#Load Data
+```{r}
+library(readxl)
+Company <- read_excel("Company.xls")
+View(Company)
+```
+
+
+#Load Libraries
+```{r setup, include=FALSE}
+
+library(corrplot)
+library(tidyverse)
+library(readr)
+library(ggpubr)
+library(data.table)
+
+data <- Company %>%
+  group_by(SDG.1, SDG.2, SDG.3, SDG.4, SDG.5, SDG.6, SDG.7, SDG.8,SDG.9,SDG.10,
+           SDG.11,SDG.12,SDG.13,SDG.14,SDG.15,SDG.16,SDG.17) %>% 
+  summarise()
+
+# data <- data %>% 
+#   mutate(SDG.1 = factor(SDG.1, levels = c("1", "0"))) %>% 
+#   mutate(SDG.2 = factor(SDG.2, levels = c("1", "0"))) %>% 
+#   mutate(SDG.3 = factor(SDG.3, levels = c("1", "0"))) %>% 
+#   mutate(SDG.4 = factor(SDG.4, levels = c("1", "0"))) %>% 
+#   mutate(SDG.5 = factor(SDG.5, levels = c("1", "0"))) %>% 
+#   mutate(SDG.6 = factor(SDG.6, levels = c("1", "0"))) %>% 
+#   mutate(SDG.7 = factor(SDG.7, levels = c("1", "0"))) %>% 
+#   mutate(SDG.8 = factor(SDG.8, levels = c("1", "0"))) %>% 
+#   mutate(SDG.9 = factor(SDG.9, levels = c("1", "0"))) %>% 
+#   mutate(SDG.10 = factor(SDG.10, levels = c("1", "0"))) %>% 
+#   mutate(SDG.11 = factor(SDG.11, levels = c("1", "0"))) %>% 
+#   mutate(SDG.12 = factor(SDG.12, levels = c("1", "0"))) %>% 
+#   mutate(SDG.13 = factor(SDG.13, levels = c("1", "0"))) %>% 
+#   mutate(SDG.14 = factor(SDG.14, levels = c("1", "0"))) %>% 
+#   mutate(SDG.15 = factor(SDG.15, levels = c("1", "0"))) %>% 
+#   mutate(SDG.16 = factor(SDG.16, levels = c("1", "0"))) %>% 
+#   mutate(SDG.17 = factor(SDG.17, levels = c("1", "0")))
+
+
+
+```
+
+#Circle Matrix of SDG Correlation
+```{r}
+#Rename Columns in preparation for figure
+data <- data %>% 
+  setnames("SDG.1", "SDG 1") %>% 
+  setnames("SDG.2", "SDG 2") %>% 
+  setnames("SDG.3", "SDG 3") %>% 
+  setnames("SDG.4", "SDG 4") %>% 
+  setnames("SDG.5", "SDG 5") %>% 
+  setnames("SDG.6", "SDG 6") %>% 
+  setnames("SDG.7", "SDG 7") %>% 
+  setnames("SDG.8", "SDG 8") %>% 
+  setnames("SDG.9", "SDG 9") %>% 
+  setnames("SDG.10", "SDG 10") %>% 
+  setnames("SDG.11", "SDG 11") %>% 
+  setnames("SDG.12", "SDG 12") %>% 
+  setnames("SDG.13", "SDG 13") %>% 
+  setnames("SDG.14", "SDG 14") %>% 
+  setnames("SDG.15", "SDG 15") %>% 
+  setnames("SDG.16", "SDG 16") %>% 
+  setnames("SDG.17", "SDG 17")
+
+
+```
+
+#Figure 1: P-Correlation Matrix
+```{r}
+M = cor(data)
+corrplot(M, method = 'number', number.cex=0.5, tl.cex=1)
+```
+
+
+#Figure 2: Circle Matrix
+```{r}
+corrplot(cor.table,
+         number.cex=0.75,
+         tl.cex=1)
+```
+
+#Figure 3: Mixed Matrix
+```{r}
+corrplot.mixed(M, order = 'AOE', number.cex=0.5, tl.cex=0.3)
+```
+
