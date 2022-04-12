@@ -86,6 +86,8 @@ corrplot(M, method = 'number', number.cex=0.5, tl.cex=1)
 corrplot(cor.table,
          number.cex=0.75,
          tl.cex=1)
+         # main="SDG Correlation Analysis: Companies",
+         # cex.main=1.4)
 ```
 
 #Figure 3: Mixed Matrix
