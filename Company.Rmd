@@ -23,23 +23,34 @@ startup_raw <- read_excel("Startup.xlsx")
 #View(Startup)
 ```
 
-#company Tidying
+#Data Tidying
 ```{r}
-#Group by only SDGs
-company_sdg <- company_raw %>%
+#Company Indicator
+company_sdg <- company_raw %>% #group by only SDGs
   group_by(SDG.1, SDG.2, SDG.3, SDG.4, SDG.5, SDG.6, SDG.7,
            SDG.8,SDG.9,SDG.10,SDG.11,SDG.12,SDG.13,SDG.14,
            SDG.15,SDG.16,SDG.17) %>% 
   summarise() %>% 
   ungroup()
 
-startup_sdg <- startup_raw %>% 
-  group_by(SDG1, SDG2, SDG3, SDG4, SDG5, SDG6, SDG7,
-           SDG8,SDG9,SDG10,SDG11,SDG12,SDG13,SDG14,
-           SDG15,SDG16,SDG17) %>% 
-  summarise() %>% 
-  ungroup()
-
+company_sdg <- company_sdg %>% #Rename columns in preparation for figure
+  setnames("SDG.1", "SDG 1") %>% 
+  setnames("SDG.2", "SDG 2") %>% 
+  setnames("SDG.3", "SDG 3") %>% 
+  setnames("SDG.4", "SDG 4") %>% 
+  setnames("SDG.5", "SDG 5") %>% 
+  setnames("SDG.6", "SDG 6") %>% 
+  setnames("SDG.7", "SDG 7") %>% 
+  setnames("SDG.8", "SDG 8") %>% 
+  setnames("SDG.9", "SDG 9") %>% 
+  setnames("SDG.10", "SDG 10") %>% 
+  setnames("SDG.11", "SDG 11") %>% 
+  setnames("SDG.12", "SDG 12") %>% 
+  setnames("SDG.13", "SDG 13") %>% 
+  setnames("SDG.14", "SDG 14") %>% 
+  setnames("SDG.15", "SDG 15") %>% 
+  setnames("SDG.16", "SDG 16") %>% 
+  setnames("SDG.17", "SDG 17")
 
 #Factor SDGs
 # company <- company %>% 
@@ -61,25 +72,13 @@ startup_sdg <- startup_raw %>%
 #   mutate(SDG.16 = factor(SDG.16, levels = c("1", "0"))) %>% 
 #   mutate(SDG.17 = factor(SDG.17, levels = c("1", "0")))
 
-#Rename Columns in preparation for figure
-company_sdg <- company_sdg %>% 
-  setnames("SDG.1", "SDG 1") %>% 
-  setnames("SDG.2", "SDG 2") %>% 
-  setnames("SDG.3", "SDG 3") %>% 
-  setnames("SDG.4", "SDG 4") %>% 
-  setnames("SDG.5", "SDG 5") %>% 
-  setnames("SDG.6", "SDG 6") %>% 
-  setnames("SDG.7", "SDG 7") %>% 
-  setnames("SDG.8", "SDG 8") %>% 
-  setnames("SDG.9", "SDG 9") %>% 
-  setnames("SDG.10", "SDG 10") %>% 
-  setnames("SDG.11", "SDG 11") %>% 
-  setnames("SDG.12", "SDG 12") %>% 
-  setnames("SDG.13", "SDG 13") %>% 
-  setnames("SDG.14", "SDG 14") %>% 
-  setnames("SDG.15", "SDG 15") %>% 
-  setnames("SDG.16", "SDG 16") %>% 
-  setnames("SDG.17", "SDG 17")
+#Startup Indicator
+startup_sdg <- startup_raw %>% #group by sdgs
+  group_by(SDG1, SDG2, SDG3, SDG4, SDG5, SDG6, SDG7,
+           SDG8,SDG9,SDG10,SDG11,SDG12,SDG13,SDG14,
+           SDG15,SDG16,SDG17) %>% 
+  summarise() %>% 
+  ungroup()
 
 startup_sdg <- startup_sdg %>% 
   setnames("SDG1", "SDG 1") %>% 
@@ -104,27 +103,28 @@ startup_sdg <- startup_sdg %>%
 
 ```
 
-#Company P-Correlation Matrix
+#Company Indicator
+##Company P-Correlation Matrix
 ```{r}
 A = cor(company_sdg)
 corrplot(A, method = 'number', number.cex=0.5, tl.cex=1)
 ```
 
-#Company Circle Matrix
+##Company Circle Matrix
 ```{r}
 
 corrplot(A,
          number.cex=0.75,
          tl.cex=1)
 ```
-
-#Startup P-Correlation Matrix
+#Startup Indicator
+##Startup P-Correlation Matrix
 ```{r}
 B = cor(startup_sdg, use="pairwise.complete.obs")
 corrplot(B, method = 'number', na.label="NA", number.cex=0.5, tl.cex=1)
 ```
 
-#Startup Circle Matrix
+##Startup Circle Matrix
 ```{r}
 
 corrplot(B,
