@@ -1,30 +1,41 @@
 ---
-title: Voluntary Ecosystem Review Barcelona '2022'
-Author: Syd Kotar
-Date: '12 April 2022'
+title: "Voluntary Ecosystem Review Barcelona '2022'"
+author: "Syd Kotar"
+date: "13 April 2022"
+output:
+  html_document: 
+    toc: true
+    toc_depth: 4
+    number_sections: true
+    toc_float: true
 ---
 
-#Load Libraries
-```{r setup, include=FALSE}
+Load Libraries
+```{r Data Import and Packages, echo = FALSE, results = 'hide', error = FALSE, warning = FALSE, message = FALSE}
 library(corrplot)
 library(tidyverse)
 library(readr)
 library(ggpubr)
 library(data.table)
 library(readxl)
+library(knitr)
 
 ```
 
-#Load company
-```{r}
+Load Data
+```{r Packages, echo = FALSE, results = 'hide', error = FALSE, warning = FALSE, message = FALSE}
 company_raw <- read_excel("Company.xls")
 #View(Company)
 startup_raw <- read_excel("Startup.xlsx")
 #View(Startup)
 ```
 
-#Data Tidying
-```{r}
+# Data Tidying
+
+Results and data ... 
+
+```{r Data Tidying, echo = FALSE, results = 'hide', error = FALSE, warning = FALSE, message = FALSE}
+
 #Company Indicator
 company_sdg <- company_raw %>% #group by only SDGs
   group_by(SDG.1, SDG.2, SDG.3, SDG.4, SDG.5, SDG.6, SDG.7,
@@ -103,29 +114,32 @@ startup_sdg <- startup_sdg %>%
 
 ```
 
-#Company Indicator
-##Company P-Correlation Matrix
-```{r}
+# Company Indicator
+This is the data analysis for the company indicator. 
+
+## Company P-Correlation Matrix
+```{r Company P-Correlation Matrix, echo = FALSE, results = 'hide', error = FALSE, warning = FALSE, message = FALSE}
 A = cor(company_sdg)
 corrplot(A, method = 'number', number.cex=0.5, tl.cex=1)
 ```
 
-##Company Circle Matrix
-```{r}
+## Company Circle Matrix
+```{r Company Circle Matrix, echo = FALSE, results = 'hide', error = FALSE, warning = FALSE, message = FALSE}
 
 corrplot(A,
          number.cex=0.75,
          tl.cex=1)
 ```
-#Startup Indicator
-##Startup P-Correlation Matrix
-```{r}
+# Startup Indicator
+
+## Startup P-Correlation Matrix
+```{r Startup P-Correlation Matrix, echo = FALSE, results = 'hide', error = FALSE, warning = FALSE, message = FALSE}
 B = cor(startup_sdg, use="pairwise.complete.obs")
 corrplot(B, method = 'number', na.label="NA", number.cex=0.5, tl.cex=1)
 ```
 
-##Startup Circle Matrix
-```{r}
+## Startup Circle Matrix
+```{r Startup Circle Matrix, echo = FALSE, results = 'hide', error = FALSE, warning = FALSE, message = FALSE}
 
 corrplot(B,
          number.cex=0.75,
