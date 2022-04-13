@@ -4,29 +4,45 @@ Author: Syd Kotar
 Date: '12 April 2022'
 ---
 
-#Load Data
-```{r}
-library(readxl)
-Company <- read_excel("Company.xls")
-View(Company)
-```
-
-
 #Load Libraries
 ```{r setup, include=FALSE}
-
 library(corrplot)
 library(tidyverse)
 library(readr)
 library(ggpubr)
 library(data.table)
+library(readxl)
 
-data <- Company %>%
-  group_by(SDG.1, SDG.2, SDG.3, SDG.4, SDG.5, SDG.6, SDG.7, SDG.8,SDG.9,SDG.10,
-           SDG.11,SDG.12,SDG.13,SDG.14,SDG.15,SDG.16,SDG.17) %>% 
-  summarise()
+```
 
-# data <- data %>% 
+#Load company
+```{r}
+company_raw <- read_excel("Company.xls")
+#View(Company)
+startup_raw <- read_excel("Startup.xlsx")
+#View(Startup)
+```
+
+#company Tidying
+```{r}
+#Group by only SDGs
+company_sdg <- company_raw %>%
+  group_by(SDG.1, SDG.2, SDG.3, SDG.4, SDG.5, SDG.6, SDG.7,
+           SDG.8,SDG.9,SDG.10,SDG.11,SDG.12,SDG.13,SDG.14,
+           SDG.15,SDG.16,SDG.17) %>% 
+  summarise() %>% 
+  ungroup()
+
+startup_sdg <- startup_raw %>% 
+  group_by(SDG1, SDG2, SDG3, SDG4, SDG5, SDG6, SDG7,
+           SDG8,SDG9,SDG10,SDG11,SDG12,SDG13,SDG14,
+           SDG15,SDG16,SDG17) %>% 
+  summarise() %>% 
+  ungroup()
+
+
+#Factor SDGs
+# company <- company %>% 
 #   mutate(SDG.1 = factor(SDG.1, levels = c("1", "0"))) %>% 
 #   mutate(SDG.2 = factor(SDG.2, levels = c("1", "0"))) %>% 
 #   mutate(SDG.3 = factor(SDG.3, levels = c("1", "0"))) %>% 
@@ -45,14 +61,8 @@ data <- Company %>%
 #   mutate(SDG.16 = factor(SDG.16, levels = c("1", "0"))) %>% 
 #   mutate(SDG.17 = factor(SDG.17, levels = c("1", "0")))
 
-
-
-```
-
-#Circle Matrix of SDG Correlation
-```{r}
 #Rename Columns in preparation for figure
-data <- data %>% 
+company_sdg <- company_sdg %>% 
   setnames("SDG.1", "SDG 1") %>% 
   setnames("SDG.2", "SDG 2") %>% 
   setnames("SDG.3", "SDG 3") %>% 
@@ -71,27 +81,57 @@ data <- data %>%
   setnames("SDG.16", "SDG 16") %>% 
   setnames("SDG.17", "SDG 17")
 
+startup_sdg <- startup_sdg %>% 
+  setnames("SDG1", "SDG 1") %>% 
+  setnames("SDG2", "SDG 2") %>% 
+  setnames("SDG3", "SDG 3") %>% 
+  setnames("SDG4", "SDG 4") %>% 
+  setnames("SDG5", "SDG 5") %>% 
+  setnames("SDG6", "SDG 6") %>% 
+  setnames("SDG7", "SDG 7") %>% 
+  setnames("SDG8", "SDG 8") %>% 
+  setnames("SDG9", "SDG 9") %>% 
+  setnames("SDG10", "SDG 10") %>% 
+  setnames("SDG11", "SDG 11") %>% 
+  setnames("SDG12", "SDG 12") %>% 
+  setnames("SDG13", "SDG 13") %>% 
+  setnames("SDG14", "SDG 14") %>% 
+  setnames("SDG15", "SDG 15") %>% 
+  setnames("SDG16", "SDG 16") %>% 
+  setnames("SDG17", "SDG 17")
+
+
 
 ```
 
-#Figure 1: P-Correlation Matrix
+#Company P-Correlation Matrix
 ```{r}
-M = cor(data)
-corrplot(M, method = 'number', number.cex=0.5, tl.cex=1)
+A = cor(company_sdg)
+corrplot(A, method = 'number', number.cex=0.5, tl.cex=1)
 ```
 
-
-#Figure 2: Circle Matrix
+#Company Circle Matrix
 ```{r}
-corrplot(cor.table,
+
+corrplot(A,
          number.cex=0.75,
          tl.cex=1)
-         # main="SDG Correlation Analysis: Companies",
-         # cex.main=1.4)
 ```
 
-#Figure 3: Mixed Matrix
+#Startup P-Correlation Matrix
 ```{r}
-corrplot.mixed(M, order = 'AOE', number.cex=0.5, tl.cex=0.3)
+B = cor(startup_sdg, use="pairwise.complete.obs")
+corrplot(B, method = 'number', na.label="NA", number.cex=0.5, tl.cex=1)
 ```
+
+#Startup Circle Matrix
+```{r}
+
+corrplot(B,
+         number.cex=0.75,
+         tl.cex=1,
+         na.label="NA")
+```
+
+
 
